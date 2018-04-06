@@ -32,7 +32,7 @@ export default {
     } else if (type === this.PIC_TYPE.STITCH) {
       return "中底走线";
     } else if (type === this.PIC_TYPE.PAD) {
-      return "鞋垫";
+      return "球鞋鞋垫";
     } else if (type === this.PIC_TYPE.SIDE_TAG) {
       return "鞋盒侧标";
     } else if (type === this.PIC_TYPE.SEAL) {
