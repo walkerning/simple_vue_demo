@@ -3,29 +3,32 @@
     <canvas ref="tmp" style="display: none" :height="height" :width="width"></canvas>
     <!--
         <div class="row cv_cont" :style="{height: 300,   position: 'relative'}">-->
-    <el-row>
-      <el-col :span="320">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
         <video class="vd" :width="width" :height="height" ref="video" @loadedmetadata="set_height" v-show="video_show"></video>
       <canvas :width="width" :height="height"  :style="{'margin-left': video_show?'-320px':'0px'}" ref="canvas"></canvas>
       <!-- style="border:1px solid #BBB;" -->
-      </el-col>
-    </el-row>
-    <template v-if="video_show">
+        </div>
+      </div>
+    <div class="row">
+      <template v-if="video_show">
         <span class="shoot" @click="take_picture">
         </span>
       </template>
-    <el-row v-if="box_loaded">
-      <el-col :span="4" v-for="(tp, ind) in pic_lst.slice(0, 3)" :key="tp.type">
+    </div>
+    <div class="row" v-if="box_loaded">
+      <div class="col-sm" v-for="(tp, ind) in pic_lst.slice(0, 3)" :key="tp.type">
         <img :ref="'photo_' + tp.type" :alt="tp.type" :class="{hightlight: tp.type == current_pictype}" :src="preview_map[tp.type].pic?preview_map[tp.type].pic:preview_map[tp.type].box" @click="change_cur_pictype(tp.type)"/>
-        {{ pic_type_string(tp.type) }}
-      </el-col>
-    </el-row>
-    <el-row v-if="box_loaded">
-      <el-col :span="4" v-for="tp in pic_lst.slice(3, 6)" :key="tp.type">
+        <p>{{ pic_type_string(tp.type) }}</p>
+      </div>
+    </div>
+    <div class="row" v-if="box_loaded">
+      <div class="col-sm" v-for="tp in pic_lst.slice(3, 6)" :key="tp.type">
         <img :ref="'photo_' + tp.type" :alt="tp.type" :class="{hightlight: tp.type == current_pictype}" :src="preview_map[tp.type].pic?preview_map[tp.type].pic:preview_map[tp.type].box" @click="change_cur_pictype(tp.type)"/>
-        {{ pic_type_string(tp.type) }}
-      </el-col>
-    </el-row>
+        <p>{{ pic_type_string(tp.type) }}</p>
+      </div>
+    </div>
     <mt-actionsheet
        :actions="actions"
        v-model="sheet_visible">
@@ -53,11 +56,13 @@
       <!-- </el-col> -->
       <mt-field label="备注信息" placeholder="备注信息" type="textarea" rows="4" v-model="comment"></mt-field>
 
-    <el-row>
-      <mt-button @click.native="submit_pics" :disabled="!all_photoed">提交</mt-button>
-      <mt-button @click.native="reset_all">重置</mt-button>
-    </el-row>
-
+      <div class="row">
+        <div class="col-sm">
+          <mt-button @click.native="submit_pics" :disabled="!all_photoed">提交</mt-button>
+          <mt-button @click.native="reset_all">重置</mt-button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -396,19 +401,20 @@ left: 0;
 margin: 0;
 }
 .shoot {
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 9rem;
+  height: 9rem;
   display: block;
   border-radius: 50%;
   margin: .3rem auto;
   background:url('./assets/images/shoot.png') no-repeat;
-  -webkit-background-size: 2rem 2rem;
-  background-size: 2.4rem 2.4rem;
+  -webkit-background-size: 4rem 4rem;
+  background-size: 4.8rem 4.8rem;
   background-position: 50%  50%;
 }
 .row {
     display:block;
     position:relative;
+    text-align: center;
 }
 .hightlight {
 border: 1mm solid red;
@@ -430,4 +436,8 @@ display: inline;
 p {
 
 }
+</style>
+<style lang="scss">
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
 </style>
