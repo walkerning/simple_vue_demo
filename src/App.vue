@@ -64,6 +64,7 @@
 
 <script>
   import { MessageBox, Indicator } from 'mint-ui'
+import LZString from 'lz-string'
 import pic_type from "./common/pic_type"
 import sm from "./common/shoe_models"
 import axios from 'axios';
@@ -72,7 +73,7 @@ import axios from 'axios';
 var PREVIEW_RATIO = 4;
 
 export const api_version = "v1";
-export const base = "http://foxfi.eva6.nics.cc:8000";
+export const base = "https://foxfi.eva6.nics.cc";
 export const api_base = base + "/api/" + api_version;
 
 export default {
@@ -83,6 +84,10 @@ export default {
     },
     shoe_models_map: function () {
       return _.keyBy(this.shoe_models, "id")
+    },
+    compressed_pic_lst: function () {
+      console.log("start compress");
+      return _.map(this.pic_lst, (p) => {return {type: p.type, pic: LZString.compress(p.pic)};});
     }
   },
   data () {
@@ -301,6 +306,7 @@ export default {
       this.current_pictype = pic_type.PIC_TYPE.APPEAR;
       this.plot_box(this.current_pictype);
       this.video_show = true;
+      this.$refs.video.play();
     },
     submit_pics: function() {
       // **TODO**: axios send to server
@@ -310,12 +316,16 @@ export default {
             text: '等待计算...',
             spinnerType: 'fading-circle'
           });
+
+           //console.log(this.compressed_pic_lst[0].pic.length, this.pic_lst[0].pic.length)//, this.compressed_pic_lst[0].pic);
           var params = {
             sm_id: this.selected_sm_id,
             sm_name: this.shoe_models_map[this.selected_sm_id].name,
             comment: this.comment,
-            pic_lst: this.pic_lst
+            // pic_lst: this.compressed_pic_lst
+          pic_lst: this.pic_lst
           };
+
           axios.post(`${api_base}/detect`, params)
             .then((ans) => {
               Indicator.close();

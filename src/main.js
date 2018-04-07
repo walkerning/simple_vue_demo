@@ -11,8 +11,8 @@ Vue.use(MintUI)
 Vue.component(Row.name, Row)
 Vue.component(Col.name, Col)
 
-new Vue({
+var vm = new Vue({
   el: '#app',
   components: { App },
   render: h => h(App)
-})
+});
