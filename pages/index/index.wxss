@@ -33,7 +33,7 @@
 }
 
 .image-inline {
-  margin: 10rpx;
+  margin-left: 20rpx;
   width: 160rpx;
   display: block;
   height: 160rpx;
@@ -52,9 +52,29 @@
 }
 
 .op-pane {
+  margin-top: 30rpx;
   display: flex;
   width: 90%;
   justify-content: center;
 }
 
 .op-btn {}
+
+.section-title {
+  text-align: left; /* or align-items */
+  width: 90%;
+  float: left;
+  display: block;
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 10rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
+
+.textarea {
+  height: 200rpx;
+  width: 95%;
+  background-color: #eee;
+  padding: 5rpx;
+}

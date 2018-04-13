@@ -5,11 +5,13 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#000",
+    "navigationBarBackgroundColor": "#eee",
     "navigationBarTitleText": "鞋demo",
     "navigationBarTextStyle":"black"
   },
   "tabBar": {
+    "backgroundColor": "#eee",
     "color": "#aaa",
     "selectedColor": "green",
     "list": [
@@ -17,8 +19,8 @@
         "pagePath": "pages/index/index",
         "text": "首页"
       }, {
-          "pagePath": "pages/logs/logs",
-          "text": "日志"
+        "pagePath": "pages/logs/logs",
+        "text": "日志"
       }
     ]
   },

@@ -1,14 +1,7 @@
 <!--index.wxml-->
 <view class="container">
-  <!-- <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view> -->
   <image hidden="{{!previewShow}}" src="{{previewSrc}}" style="width: 80%; height: 600rpx;" />
-  <camera hidden="{{previewShow}}" style="margin-top: 0rpx" device-position="back" flash="off" binderror="error" style="width: 80%; height: 600rpx;">
+  <camera hidden="{{previewShow}}" device-position="back" flash="off" binderror="error" style="width: 80%; height: 600rpx;">
     <cover-view>
     <!-- TODO: do not support aspectFit -->
     <cover-image src="{{maskSrc}}" mode="aspectFit" />
@@ -24,10 +17,8 @@
       <image hidden="{{pics[index]}}" src="{{item.mask_pic}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndex" id="{{index}}" />
       <image wx:if="{{pics[index]}}" src="{{pics[index]}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndex" id="{{index}}"/>
       <text>{{item.name}}</text>
-      <!-- TODO: 想好pattern修改一个图这种是不算吗... -->
       <progress percent="{{uploadPercent[index]}}" hidden="{{!uploading}}" />
     </view>
-  <!-- <button  type="{{index == currentIndex? 'primary': ''}}" bindtap="changeCurrentIndex" id="{{index}}">{{item.name}}</button> -->
   </scroll-view>
 
   <action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetChange">
@@ -37,21 +28,20 @@
   </action-sheet>
 
   <!-- shoe model picker -->
+  <view class="section-title">选择球鞋型号</view>
   <picker bindchange="bindPickerChange" value="{{shoeModelIndex}}" range="{{shoeModels}}" disabled="{{uploading || detecting || detected}}">
     <view>
-      <text style="color: #555555; font-size: 50rpx;" > 球鞋型号: {{shoeModels[shoeModelIndex]}}</text>
+      <text> {{shoeModels[shoeModelIndex]}}</text>
     </view>
   </picker>
-  <!-- <view class="type-choose-view"> -->
-    <!-- <label style="display: inline-block; margin-right: 30rpx;">输入备注</label> -->
-  <input type="text" placeholder="备注" disabled="{{uploading || detecting || detected}}" bindinput="bindCommentInput" style="margin-top:30rpx" />
-  <!-- </view> -->
+    <view class="section-title">输入备注 (可选)</view>
+    <textarea disabled="{{uploading || detecting || detected}}" bindinput="bindCommentInput" maxlength="100" class="textarea" />
 
   <view class="op-pane">
-    <button style="margin: 30rpx" disabled="{{!canUpload || detected}}" type="primary" bindtap="bindUploadTap" class="op-btn">
+    <button disabled="{{!canUpload || detected}}" type="primary" bindtap="bindUploadTap" class="op-btn">
     {{detected? detectRes: '上传测试'}}
     </button>
-    <button style="margin: 30rpx" bindtap="bindResetTap" class="op-btn">重置</button>
+    <button bindtap="bindResetTap" class="op-btn">重置</button>
   </view>
   <loading hidden="{{!detecting}}">
     测试中...
