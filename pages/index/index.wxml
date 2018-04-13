@@ -1,0 +1,62 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view> -->
+  <image hidden="{{!previewShow}}" src="{{previewSrc}}" style="width: 80%; height: 600rpx;" />
+  <camera hidden="{{previewShow}}" style="margin-top: 0rpx" device-position="back" flash="off" binderror="error" style="width: 80%; height: 600rpx;">
+    <cover-view>
+    <!-- TODO: do not support aspectFit -->
+    <cover-image src="{{maskSrc}}" mode="aspectFit" />
+      <!-- <canvas style="width: 100%; height: 750rpx;" canvas-id="maskCanvas"></canvas> -->
+    </cover-view>
+  </camera>
+
+  <image hidden="{{previewShow || canUpload}}" src="/images/index/shoot.png" class="btn-shoot" bindtap="takePhoto" />
+  <image hidden="{{!previewShow && !canUpload}}" src="/images/index/shoot_disable.jpeg" class="btn-shoot" />
+
+  <scroll-view scroll-x class="type-choose-view">
+    <view class="btn-inline" wx:for="{{picTypes}}">
+      <image hidden="{{pics[index]}}" src="{{item.mask_pic}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndex" id="{{index}}" />
+      <image wx:if="{{pics[index]}}" src="{{pics[index]}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndex" id="{{index}}"/>
+      <text>{{item.name}}</text>
+      <!-- TODO: 想好pattern修改一个图这种是不算吗... -->
+      <progress percent="{{uploadPercent[index]}}" hidden="{{!uploading}}" />
+    </view>
+  <!-- <button  type="{{index == currentIndex? 'primary': ''}}" bindtap="changeCurrentIndex" id="{{index}}">{{item.name}}</button> -->
+  </scroll-view>
+
+  <action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetChange">
+  <block wx:for="{{actionSheetItems}}">
+    <action-sheet-item class="item" bindtap="bindActionChoose" data-name="{{index}}">{{item}}</action-sheet-item>
+  </block>
+  </action-sheet>
+
+  <!-- shoe model picker -->
+  <picker bindchange="bindPickerChange" value="{{shoeModelIndex}}" range="{{shoeModels}}" disabled="{{uploading || detecting || detected}}">
+    <view>
+      <text style="color: #555555; font-size: 50rpx;" > 球鞋型号: {{shoeModels[shoeModelIndex]}}</text>
+    </view>
+  </picker>
+  <!-- <view class="type-choose-view"> -->
+    <!-- <label style="display: inline-block; margin-right: 30rpx;">输入备注</label> -->
+  <input type="text" placeholder="备注" disabled="{{uploading || detecting || detected}}" bindinput="bindCommentInput" style="margin-top:30rpx" />
+  <!-- </view> -->
+
+  <view class="op-pane">
+    <button style="margin: 30rpx" disabled="{{!canUpload || detected}}" type="primary" bindtap="bindUploadTap" class="op-btn">
+    {{detected? detectRes: '上传测试'}}
+    </button>
+    <button style="margin: 30rpx" bindtap="bindResetTap" class="op-btn">重置</button>
+  </view>
+  <loading hidden="{{!detecting}}">
+    测试中...
+  </loading>
+    <toast hidden="{{toastHidden}}" duration="3000" bindchange="bindToastChange">
+    {{toastText}}
+  </toast>
+</view> 

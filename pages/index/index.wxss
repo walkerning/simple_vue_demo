@@ -1,0 +1,60 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.btn-shoot {
+    margin-top: 20rpx;
+    border-radius: 50%;
+    width: 120rpx;
+    height: 120rpx;
+}
+
+.btn-inline {
+  margin: 10rpx;
+  width: 160rpx;
+  display: inline-block;
+  justify-content: center;
+  font-size: 30rpx;
+  text-align: center;
+}
+
+.image-inline {
+  margin: 10rpx;
+  width: 160rpx;
+  display: block;
+  height: 160rpx;
+  background-color: #eeeeee;
+}
+
+.choosen {
+  border: 10rpx solid green;
+}
+
+.type-choose-view {
+  display: flex;
+  white-space: nowrap; /* necessary */
+  width: 95%;
+  margin-top: 10rpx;
+}
+
+.op-pane {
+  display: flex;
+  width: 90%;
+  justify-content: center;
+}
+
+.op-btn {}
