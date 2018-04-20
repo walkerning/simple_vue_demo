@@ -1,12 +1,11 @@
 <!--index.wxml-->
 <view class="container">
   <image hidden="{{!previewShow}}" src="{{previewSrc}}" style="width: 80%; height: 600rpx;" />
-  <camera hidden="{{previewShow}}" device-position="back" flash="off" binderror="error" style="width: 80%; height: 600rpx;">
-    <cover-view>
-    <!-- TODO: do not support aspectFit -->
-    <cover-image src="{{maskSrc}}" mode="aspectFit" />
-      <!-- <canvas style="width: 100%; height: 750rpx;" canvas-id="maskCanvas"></canvas> -->
-    </cover-view>
+  <camera class="camera" hidden="{{previewShow}}" device-position="back" flash="off" binderror="error" style="width: 80%; height: 600rpx;">
+  <!-- TODO: do not support aspectFit -->
+    <cover-view style="position: relative; top: 150rpx; left: 150rpx; height: 300rpx; width: 300rpx">
+      <cover-image src="{{maskSrc}}" mode="aspectFit" />
+    </cover-view> 
   </camera>
 
   <image hidden="{{previewShow || canUpload}}" src="/images/index/shoot.png" class="btn-shoot" bindtap="takePhoto" />
