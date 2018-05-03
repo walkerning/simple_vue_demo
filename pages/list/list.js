@@ -10,34 +10,34 @@ Page({
    */
   data: {
     gotInfo: false,
+    fetching: true,
+    userInfo: {},
     userObj: {},
     tasks: []
   },
 
   refreshList: function() {
+    this.setData({ fetching: true })
     api.apiGetUserTasks(this.data.userObj.id).then((lst) => {
-      this.setData({ tasks: lst })
+      this.setData({
+        tasks: lst,
+        fetching: false
+      })
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userObj) {
+    app.waitLogin().then((ures) => {
+      var [uInfo, uObj] = ures
       this.setData({
-        userObj: app.globalData.userObj
+        userInfo: uInfo,
+        userObj: uObj
       })
       this.refreshList()
       this.setData({ gotInfo: true })
-    } else {
-      app.userObjReadyCallback = uObj => {
-        this.setData({
-          userObj: uObj
-        })
-        this.refreshList()
-        this.setData({ gotInfo: true })
-      }
-    }
+    })
   },
 
   /**

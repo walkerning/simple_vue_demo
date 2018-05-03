@@ -1,15 +1,32 @@
 // user.js
-const BASE_URL = ""
-const API_BASE_URL = BASE_URL + "/api/v1"
-const FAKE = 0
-const NOT_SURE = 1
-const TRUE = 2
+var api = require("../../common/api")
+const app = getApp()
 
 Page({
   data: {
-
+    userInfo: {},
+    userObj: {}
   },
-  onLoad: function () {
 
+  onLoad: function () {
+    app.waitLogin().then((ures) => {
+      var [uInfo, uObj] = ures
+      this.setData({
+        userInfo: uInfo,
+        userObj: uObj
+      })
+    })
+  },
+
+  refreshUserObj: function() {
+    api.apiGetUserMe()
+      .then((uObj) => {
+        app.globalData.userObj = uObj
+        this.setData({ userObj: uObj })
+      })
+  },
+
+  onPullDownRefresh: function () {
+    this.refreshUserObj()
   }
 })

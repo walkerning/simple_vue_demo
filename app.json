@@ -9,7 +9,8 @@
     "backgroundColor": "#F8F8F8",
     "navigationBarBackgroundColor": "#eeeeee",
     "navigationBarTitleText": "鞋demo",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "backgroundColor": "#eee",

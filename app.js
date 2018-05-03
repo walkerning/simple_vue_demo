@@ -32,6 +32,32 @@ App({
       }
     })
   },
+
+  waitLogin: function() {
+    var app = this
+    return new Promise((resolve, reject) => {
+      if (app.globalData.userInfo) {
+        resolve(app.globalData.userInfo)
+      } else {
+        app.userInfoReadyCallback = uInfo => {
+          resolve(uInfo)
+        }
+      }
+    }).then((uInfo) => {
+      return new Promise((resolve, reject) => {
+        if (app.globalData.userObj) {
+          resolve(app.globalData.userObj)
+        } else {
+          app.userObjReadyCallback = uObj => {
+            resolve(uObj)
+          }
+        }
+      }).then((uObj) => {
+        return [uInfo, uObj]
+      })
+    })
+  },
+
   globalData: {
     userInfo: null,
     userObj: null

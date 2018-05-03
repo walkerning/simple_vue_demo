@@ -12,4 +12,7 @@
       </view>
     </block>
   </view>
+  <loading hidden="{{!fetching}}">
+    获取任务列表...
+  </loading>
 </view>
