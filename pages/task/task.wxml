@@ -16,8 +16,8 @@
       <image src="{{previewSrc}}" style="width: 80%; height: 600rpx;" />
     </block>
 
-    <scroll-view scroll-x class="type-choose-view">
-      <view class="btn-inline" wx:for="{{picTypes}}">
+    <scroll-view scroll-x class="type-choose-view" scroll-into-view="sv{{currentIndex}}">
+      <view class="btn-inline" wx:for="{{picTypes}}" id="sv{{index}}">
         <image hidden="{{pics[index]}}" src="{{item.mask_pic}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndexEvent" id="{{index}}" />
         <image wx:if="{{pics[index]}}" src="{{pics[index]}}" mode="aspectFit" class="image-inline {{index == currentIndex? 'choosen':''}}" bindtap="changeCurrentIndexEvent" id="{{index}}"/>
         <text>{{item.name}}</text>
@@ -42,7 +42,7 @@
       <view class="section-title">输入备注 (可选)</view>
       <textarea disabled="{{uploading || requesting}}" bindinput="bindCommentInput" maxlength="100" class="textarea" value="{{comment}}" />
       <view class="op-pane">
-        <button disabled="{{!canUpload}}" type="primary" bindtap="bindUploadTap" class="op-btn">
+        <button disabled="{{!canUpload}}" type="primary" bindtap="bindRunTap" class="op-btn">
           开始测试
         </button>
         <!-- <button bindtap="bindResetTap" class="op-btn">重置</button> -->
@@ -72,17 +72,13 @@
         <text> {{log}} </text>
       </view>
       <!-- TODO: tag for different status and answer -->
-      <view class="section-title">任务状态</view>
-      <view class="textarea">
-        <text> {{status}} </text>
-      </view>
-      <view class="section-title">任务结果</view>
-      <view class="textarea">
-        <text> {{answer}} </text>
+      <view>
+        <text class="tag" style="margin-right:20rpx; margin-top: 20rpx; color: {{stateViewCfg[state].color}}; background-color: {{stateViewCfg[state].backcolor}}; box-shadow: 0 0 0 2px #fff">{{stateViewCfg[state].string}}</text>
+        <text style="margin-left: 20rpx" wx:if="{{state == 'finished'}}">{{answerViewCfg[answer]}}</text>
       </view>
     </block>
 
-    <toast hidden="{{toastHidden}}" duration="3000" bindchange="bindToastChange">
-      {{toastText}}
-    </toast>
+    <!-- <toast hidden="{{toastHidden}}" duration="3000" bindchange="bindToastChange"> -->
+    <!--   {{toastText}} -->
+    <!-- </toast> -->
 </view> 

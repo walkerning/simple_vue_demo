@@ -1,1 +1,2 @@
 /* components/task.wxss */
+.tag{display:inline-block;position:relative;box-sizing:border-box;line-height:50rpx;padding:0 20rpx;border-radius:20rpx;font-size:35rpx;background:#c9c9c9;text-align:center;color:#fff}.tag::after{content:'';position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;pointer-events:none;box-sizing:border-box;border:0 solid #e5e5e5;border-width:1rpx;border-radius:20rpx}

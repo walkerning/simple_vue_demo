@@ -1,5 +1,6 @@
 //app.js
 var api = require("./common/api")
+var utils = require("./common/utils")
 
 App({
   onLaunch: function () {
@@ -30,12 +31,14 @@ App({
       if (this.userObjReadyCallback) {
         this.userObjReadyCallback(u)
       }
+    }).catch((err) => {
+      utils.error(err)
     })
   },
 
   waitLogin: function() {
     var app = this
-    return new Promise((resolve, reject) => {
+    return utils.timeout(new Promise((resolve, reject) => {
       if (app.globalData.userInfo) {
         resolve(app.globalData.userInfo)
       } else {
@@ -55,7 +58,7 @@ App({
       }).then((uObj) => {
         return [uInfo, uObj]
       })
-    })
+    }), 10000, "登录超时")
   },
 
   globalData: {

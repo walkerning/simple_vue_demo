@@ -1,6 +1,6 @@
 // pages/list.js
 var api = require("../../common/api")
-
+var utils = require("../../common/utils")
 const app = getApp()
 
 Page({
@@ -10,7 +10,8 @@ Page({
    */
   data: {
     gotInfo: false,
-    fetching: true,
+    fetching: false,
+    loginging: false,
     userInfo: {},
     userObj: {},
     tasks: []
@@ -29,8 +30,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({ logining: true })
     app.waitLogin().then((ures) => {
+      this.setData({ logining: false })
       var [uInfo, uObj] = ures
+      console.log("hi", ures)
       this.setData({
         userInfo: uInfo,
         userObj: uObj
@@ -38,6 +42,10 @@ Page({
       this.refreshList()
       this.setData({ gotInfo: true })
     })
+      .catch((err) => {
+        this.setData({ logining: false })
+        utils.error(err)
+      })
   },
 
   /**

@@ -6,7 +6,7 @@
   <view class="page__bd">
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell">
-        <view class="weui-cell__bd">可拥有任务</view>
+        <view class="weui-cell__bd">任务上限</view>
         <view class="weui-cell__ft">{{userObj.quota}}</view>
       </view>
     </view>

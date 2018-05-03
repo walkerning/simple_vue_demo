@@ -12,6 +12,9 @@
       </view>
     </block>
   </view>
+  <loading hidden="{{!logining}}">
+    登录中...
+  </loading>
   <loading hidden="{{!fetching}}">
     获取任务列表...
   </loading>

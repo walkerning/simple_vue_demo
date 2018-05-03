@@ -1,5 +1,13 @@
 <!--components/task.wxml-->
-<view class="weui-flex kind-list__item-hd">
-  <view class="weui-flex__item">Task {{taskId}}</view>
-  <text>{{state}} {{answer}} {{shoeModel}}</text>
+<view class="weui-flex kind-list__item-hd" style="padding: 15rpx">
+  <view class="weui-flex__item">
+    Task {{taskId}}
+    <view class="tag weui-flex__item" style="float: right; color: {{stateViewCfg[state].color}}; background-color: {{stateViewCfg[state].backcolor}}; box-shadow: 0 0 0 2px #fff">
+      <text>{{stateViewCfg[state].string}}</text>
+    </view>
+  </view>
+  <view class="weui-flex__item">
+    {{shoeModel}}
+    <text style="float: right" wx:if="{{state == 'finished'}}" >{{answerViewCfg[answer]}}</text> <!-- TODO: 怎么更好看? -->
+  </view>
 </view>

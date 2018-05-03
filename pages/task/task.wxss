@@ -57,7 +57,7 @@
 }
 
 .textarea {
-  height: 200rpx;
+  height: 120rpx;
   width: 95%;
   background-color: #eee;
   padding: 5rpx;
@@ -69,3 +69,5 @@
     flex-direction: column;
     width: 100%;
 }
+
+.tag{display:inline-block;position:relative;box-sizing:border-box;line-height:80rpx;padding:0 20rpx;border-radius:20rpx;font-size:45rpx;background:#c9c9c9;text-align:center;color:#fff}.tag::after{content:'';position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;pointer-events:none;box-sizing:border-box;border:0 solid #e5e5e5;border-width:1rpx;border-radius:20rpx}

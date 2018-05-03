@@ -1,10 +1,10 @@
-//index.js
-//获取应用实例
+// task.js
 var consts = require("../../common/consts");
 var api = require("../../common/api");
-// var UNorm = require("../../bower_components/unorm/lib/unorm");
-const app = getApp()
+var utils = require("../../common/utils")
+var viewCfg = require("../../common/view")
 
+const app = getApp()
 
 function range(x) {
   var res = []
@@ -21,6 +21,8 @@ Page({
     canIUse: wx.canIUse("button.open-type.getUserInfo"),
 
     // view data
+    stateViewCfg: viewCfg.stateViewCfg,
+    answerViewCfg: viewCfg.answerViewCfg,
     currentIndex: 0,
     picTypes: [{
       "type": "appear",
@@ -133,10 +135,12 @@ Page({
           this.setData({ fetching: false })
         })
       })
+      .catch((err) => { utils.error(err); throw err })
       .then(() => {
         var nInd = this.findNextNotPhotoed()
         if (nInd === undefined) {
           nInd = 0 // preview first
+          this.setData({ canUpload: true })
         }
         this.changeCurrentIndex(nInd, true)
       })
@@ -194,9 +198,9 @@ Page({
     this.setData({ shoeModelIndex: e.detail.value, shoe_model: this.data.shoeModels[e.detail.value] })
   },
 
-  bindToastChange: function(e) {
-    this.setData( {toastHidden: true })
-  },
+  // bindToastChange: function(e) {
+  //   this.setData( {toastHidden: true })
+  // },
 
   bindSaveTap: function(e) {
     this.setData({
@@ -232,30 +236,47 @@ Page({
         uploading: false
       })
     }).catch((err) => {
+      utils.error(err)
       this.setData({
         uploading: false
       })
-      throw err
+      return Promise.reject(null)
     })
   },
 
-  bindUploadTap: function(e) {
-    var user_id = this.data.user_id
-    var task_id = this.data.id
-    return this.bindSaveTap().then(() => {
-      this.setData({
-        requesting: true
-      })
-      return api.apiRunTask(user_id, task_id)
-        .then((task) => {
-          // TODO: update this page...
-          this.setData(task)
-          this.setData({
-            requesting: false
+  bindRunTap: function(e) {
+    wx.showModal({
+      title: "确定开始测试吗",
+      content: "一旦开始测试, 不能再改变任务配置或取消测试. 请仔细确认图片合格, 信息正确",
+      confirmText: "确定",
+      cancelText: "取消",
+      success: (res) => {
+        if (res.confirm) {
+          var user_id = this.data.user_id
+          var task_id = this.data.id
+          return this.bindSaveTap().then(() => {
+            this.setData({
+              requesting: true
+            })
+            return api.apiRunTask(user_id, task_id)
+              .then((task) => {
+                // TODO: update this page...
+                this.setData(task)
+                this.setData({
+                  requesting: false
+                })
+              })
           })
-        })
-      // TODO: handle error! connection or server return validation/bad request error and so on.
+            .catch((err) => {
+              utils.error(err)
+              this.setData({
+                  requesting: false
+              })
+            });
+        }
+      }
     })
+    // handle error! connection or server return validation/bad request error and so on.
   },
 
   findNextNotPhotoed: function() {
@@ -300,9 +321,5 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  },
-
-  error(e) {
-    console.log(e.detail)
   }
 })
