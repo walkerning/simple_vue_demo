@@ -57,6 +57,26 @@ module.exports = {
       }
     })
   },
+  apiDownloadFile: function apiDownloadFile(user_id, task_id, file_type) {
+    var url = `${API_BASE_URL}/users/${user_id}/tasks/${task_id}/files/${file_type}`
+    return new Promise((resolve, reject) => {
+      wafer.downloadFile({
+        login: true,
+        url: url,
+        success: (res) => {
+          console.log(res)
+          if (res.statusCode == 204) {
+            resolve(undefined)
+          } else {
+            resolve(res["tempFilePath"])
+          }
+        },
+        fail: (err) => {
+          reject(err)
+        }
+      })
+    })
+  },
   apiUploadFile: function apiUploadFile(user_id, task_id, file_path, file_type, onProgressUpdate) {
     var task_url = `${API_BASE_URL}/users/${user_id}/tasks/${task_id}`
     return new Promise((resolve, reject) => {
@@ -71,6 +91,9 @@ module.exports = {
         },
         success: (res) => {
           resolve(res.data)
+        },
+        fail: (err) => {
+          reject(err)
         }
       }, (task) => {
         if (onProgressUpdate !== undefined) {

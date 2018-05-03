@@ -18,7 +18,7 @@ Page({
     // 用户信息
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    canIUse: wx.canIUse("button.open-type.getUserInfo"),
 
     // view data
     currentIndex: 0,
@@ -53,6 +53,7 @@ Page({
     previewShow: false,
     previewSrc: null,
 
+    fetching: false,
     // Upload
     canUpload: false,
     uploading: false,
@@ -83,58 +84,69 @@ Page({
   //事件处理函数
   onLoad: function (option) {
     // FIXME: supported shoe model should be fetched from server too...
-    // console.log(option)
-    // // var shoe_models = this.data.shoeModels
-    // // for (var i in shoe_models) {
-    // //   shoe_models[i] = UNorm.nfkc(shoe_models[i])
-    // // }
-    // // this.setData({ shoeModels: shoe_models })
-    // for (var key in option) {
-    //   // option[key] = UNorm.nfkc(decodeURIComponent(option[key]))
-    //   console.log(option[key])
-    //   option[key] = decodeURIComponent(unescape(option[key]))
-    //   console.log(option[key])
-    // }
-    // this.setData(option) // TODO: filter option
-    this.setData(app.now_task)
-    var ind = this.data.shoeModels.indexOf(this.data.shoe_model)
-    console.log(this.data.shoeModels, this.data.shoe_model, ind, typeof(this.data.shoeModels[1]), typeof(this.data.shoe_model))
-    this.setData({ shoeModelIndex: ind })
-    // this.setData({
-    //   taskId: option.task_id,
-    //   userId: option.user_id,
-    //   shoeModelIndex: ind,
-    //   shoe_model: option.shoe_model,
-    //   comment: option.comment,
-    //   state: option.state,
-    //   log: option.log,
-    //   answer: option.answer,
-    //   runTime: option.run_time,
-    //   startTime: option.start_time,
-    //   finishTime: option.finish_time,
-    //   metaTag: option.meta_tag
-    // });
+    // this.setData(app.now_task)
     // **TODO**: get picture from server
     this.len = this.data.picTypes.length
-    console.log("state: ", this.data.state)
-    if (this.data.state == 'incomplete') {
-      this.ctx = wx.createCameraContext()
-    }
     this.setData({
-      maskSrc: this.data.picTypes[this.data.currentIndex]["mask_pic"],
-      uploadPercent: new Array(this.len).fill(0)
+      user_id: app.now_task.user_id,
+      id: app.now_task.id
     })
-    this.changeCurrentIndex(this.data.currentIndex)
-  },
-
-  onPullDownRefresh: function () {
-    api.apiGetUserTask(this.data.user_id, this.data.id)
-      .then(function (t) {
-        this.setData(t)
+    this.refreshTaskInfo()
+      .then(() => {
+        if (this.data.state == "incomplete") {
+          this.ctx = wx.createCameraContext()
+        }
+        this.setData({
+          maskSrc: this.data.picTypes[this.data.currentIndex]["mask_pic"],
+          uploadPercent: new Array(this.len).fill(0)
+        })
       })
   },
 
-  changeCurrentIndex: function (newInd) {
+  downloadFiles: function() {
+    return Promise.all(this.data.picTypes.map((p) => {
+      return api.apiDownloadFile(this.data.user_id, this.data.id, p["type"]);
+    }))
+  },
+
+  refreshTaskInfo: function() {
+    this.setData({ fetching: true })
+    return api.apiGetUserTask(this.data.user_id, this.data.id)
+      .then((t) => {
+        this.setData(t)
+        var ind = this.data.shoeModels.indexOf(this.data.shoe_model)
+        this.setData({ shoeModelIndex: ind })
+      })
+      .then(() => {
+        return this.downloadFiles().then((paths) => {
+          paths.forEach((path, ind) => {
+            if (path === undefined) {
+              if (this.data.state !== "incomplete") {
+                return Promise.reject({ errMsg: "Not exists" })
+              }
+            } else {
+              this.setData({
+                ["pics[" + ind + "]"]: path
+              })
+            }
+          })
+          this.setData({ fetching: false })
+        })
+      })
+      .then(() => {
+        var nInd = this.findNextNotPhotoed()
+        if (nInd === undefined) {
+          nInd = 0 // preview first
+        }
+        this.changeCurrentIndex(nInd, true)
+      })
+  },
+
+  onPullDownRefresh: function () {
+    this.refreshTaskInfo()
+  },
+
+  changeCurrentIndex: function (newInd, noaction) {
     if (this.data.state == "incomplete") {
       this.setData({ currentIndex: newInd })
       this.setData({ maskSrc: this.data.picTypes[this.data.currentIndex]["mask_pic"] })
@@ -142,7 +154,7 @@ Page({
         this.setData({ previewShow: true, previewSrc: this.data.pics[newInd] })
         return
       }
-      if (this.data.pics[newInd]) { // if has data, show the action sheet
+      if (this.data.pics[newInd] && !noaction) { // if has data, show the action sheet
         this.setData({ actionSheetHidden: false })
       } else { // else make sure in camera mode
         this.setData({ previewShow: false })
@@ -181,10 +193,6 @@ Page({
   bindPickerChange: function(e) {
     this.setData({ shoeModelIndex: e.detail.value, shoe_model: this.data.shoeModels[e.detail.value] })
   },
-
-  // bindCommentInput: function(e) {
-  //   this.setData({ comment: e.detail.value })
-  // },
 
   bindToastChange: function(e) {
     this.setData( {toastHidden: true })
@@ -230,28 +238,6 @@ Page({
       throw err
     })
   },
-  // bindResetTap: function(e) {
-  //   // if (this.data.state !== "incomplete") {
-  //   //   return
-  //   // }
-  //   this.setData({
-  //     currentIndex: 0,
-  //     pics: {},
-  //     actionSheetHidden: true,
-  //     previewShow: false,
-  //     previewSrc: null,
-  //     shoeModelIndex: 0,
-  //     shoe_model: null,
-  //     comment: "",
-  //     canUpload: false,
-  //     uploading: false,
-  //     requesting: false,
-  //     uploadPercent: new Array(this.len).fill(0),
-  //     toastText: "",
-  //     toastHidden: true,
-  //     answer: ""
-  //   })
-  // },
 
   bindUploadTap: function(e) {
     var user_id = this.data.user_id
@@ -272,6 +258,18 @@ Page({
     })
   },
 
+  findNextNotPhotoed: function() {
+    var cInd = parseInt(this.data.currentIndex);
+    var tn = this.len
+    for (let i = 0; i < tn; i++) {
+      var nInd = (cInd + i) % tn
+      if (!this.data.pics[nInd]) {
+        return nInd;
+      }
+    }
+    return undefined;
+  },
+
   takePhoto() {
     if (this.data.previewShow || this.data.canUpload) {
       return
@@ -279,32 +277,24 @@ Page({
     var cInd = parseInt(this.data.currentIndex);
     console.log("take photo called.", cInd)
     this.ctx.takePhoto({
-      quality: 'high',
+      quality: "high",
       success: (res) => {
         this.setData({ ["pics["+cInd+"]"]: res.tempImagePath })
         // Find next index that is not photoed
-        var tn = this.len
-        var finished = true
-        for (let i = 1; i < tn; i++) {
-          var nInd = (cInd + i) % tn
-          if (!this.data.pics[nInd]) {
-            this.setData({ currentIndex: nInd })
-            finished = false
-            break
-          }
-        }
-        if (finished) {
+        var nInd = this.findNextNotPhotoed()
+        if (nInd !== undefined) {
+          this.setData({ currentIndex: nInd })
+        } else {
           this.setData({ canUpload: true,
                          previewShow: true,
                          previewSrc: this.data.pics[this.data.currentIndex]
-          })
+                       })
         }
       }
     })
   },
 
   getUserInfo: function(e) {
-    console.log("at getUserInfo", e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,

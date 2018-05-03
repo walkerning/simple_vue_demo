@@ -3,18 +3,6 @@ var api = require("./common/api")
 
 App({
   onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync("logs") || []
-    logs.unshift(Date.now())
-    wx.setStorageSync("logs", logs)
-
-    // // 登录
-    // wx.login({
-    //   success: res => {
-    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //     console.log("wx on login");
-    //   }
-    // })
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -43,84 +31,6 @@ App({
         this.userObjReadyCallback(u)
       }
     })
-    // wafer.request({
-    //   login: true,
-    //   url: `http://${consts.HOST}/api/v1/users/me`,
-    //   success: function(res) {
-    //     console.log(res);
-    //     console.log("send request")
-    //     // wafer.request({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks`,
-    //     //   method: "POST",
-    //     //   data: {
-    //     //     meta_tag: "v0.1"
-    //     //   },
-    //     //   success: function(res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // });
-    //     // wafer.request({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks/1`,
-    //     //   method: "PUT",
-    //     //   data: {
-    //     //     "shoe_model": "hey",
-    //     //     "state": "complete"
-    //     //   },
-    //     //   success: function (res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // })
-    //   // },
-    //     // wafer.uploadFile({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks/1/files`,
-    //     //   method: "POST",
-    //     //   filePath: "/images/index/mask3.png",
-    //     //   name: "file",
-    //     //   formData: {
-    //     //     type: "appear"
-    //     //   },
-    //     //   success: function (res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // })
-
-    //             // wafer.request({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks/1`,
-    //     //   method: "PUT",
-    //     //   data: {
-    //     //     "shoe_model": "hey",
-    //     //     "state": "complete"
-    //     //   },
-    //     //   success: function (res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // })
-    //     // wafer.request({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks/1/run`,
-    //     //   method: "PUT",
-    //     //   success: function (res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // })
-    //     //         wafer.request({
-    //     //   login: true,
-    //     //   url: `http://${consts.HOST}/api/v1/users/${res.data.id}/tasks`,
-    //     //   method: "GET",
-    //     //   success: function (res2) {
-    //     //     console.log("create res:", res2);
-    //     //   }
-    //     // })
-      
-    //   },
-    //   fail: function(err) {
-    //     console.log(err)
-    //   }
-    // })
   },
   globalData: {
     userInfo: null,

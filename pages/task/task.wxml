@@ -48,6 +48,9 @@
         <!-- <button bindtap="bindResetTap" class="op-btn">重置</button> -->
         <button bindtap="bindSaveTap" class="op-btn">暂存</button>
       </view>
+      <loading hidden="{{!fetching}}">
+        获取任务...
+      </loading>
       <loading hidden="{{!uploading}}">
         上传任务配置...
       </loading>
