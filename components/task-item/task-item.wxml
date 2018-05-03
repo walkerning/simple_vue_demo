@@ -1,0 +1,5 @@
+<!--components/task.wxml-->
+<view class="weui-flex kind-list__item-hd">
+  <view class="weui-flex__item">Task {{taskId}}</view>
+  <text>{{state}} {{answer}} {{shoeModel}}</text>
+</view>

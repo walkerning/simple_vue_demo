@@ -1,14 +1,15 @@
 {
-  "pages":[
-    "pages/index/index",
-    "pages/user/user"
+  "pages": [
+    "pages/list/list",
+    "pages/user/user",
+    "pages/task/task"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "backgroundColor": "#000",
-    "navigationBarBackgroundColor": "#eee",
+  "window": {
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#eeeeee",
     "navigationBarTitleText": "鞋demo",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "backgroundColor": "#eee",
@@ -16,9 +17,10 @@
     "selectedColor": "green",
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      }, {
+        "pagePath": "pages/list/list",
+        "text": "任务"
+      },
+      {
         "pagePath": "pages/user/user",
         "text": "我"
       }

@@ -1,0 +1,15 @@
+<!--pages/list.wxml-->
+<!-- TODO: use weui wxss -->
+<view class="page page__hd">
+  <view class="page__bd page__bd_spacing">
+    <button class="weui-btn" type="primary" disabled="{{ !gotInfo || tasks.length >= userObj.quota}}" bindtap="bindCreateTask">创建新任务</button>
+  </view>
+  <view class="kind-list">
+    <!-- FIXME: view or block? -->
+    <block wx:for="{{tasks}}" wx:key="id">
+      <view class="kind-list__item" id="{{index}}" bindtap="bindOpenTask">
+        <task-item user-id="{{item.user_id}}" task-id="{{item.id}}" state="{{item.state}}" answer="{{item.answer}}" shoe-model="{{item.shoe_model}}"></task-item>
+      </view>
+    </block>
+  </view>
+</view>
