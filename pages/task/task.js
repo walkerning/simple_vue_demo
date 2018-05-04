@@ -114,7 +114,7 @@ Page({
 
   refreshTaskInfo: function() {
     this.setData({ fetching: true })
-    return api.apiGetUserTask(this.data.user_id, this.data.id)
+     return api.apiGetUserTask(this.data.user_id, this.data.id)
       .then((t) => {
         this.setData(t)
         var ind = this.data.shoeModels.indexOf(this.data.shoe_model)
