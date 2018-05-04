@@ -31,13 +31,8 @@ Page({
    */
   onLoad: function (options) {
     this.setData({ logining: true })
-    app.waitLogin().then((ures) => {
+    this.glUserInfo().then(() => {
       this.setData({ logining: false })
-      var [uInfo, uObj] = ures
-      this.setData({
-        userInfo: uInfo,
-        userObj: uObj
-      })
       this.refreshList().then(() => { this.setData({ gotInfo: true }) })
     })
       .catch((err) => {
@@ -50,10 +45,23 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    //this.glUserInfo().then(() => {
     this.refreshList()
       .then(() => {
         wx.stopPullDownRefresh()
       })
+    //})
+  },
+
+  onHide: function () {
+    this.hide = true
+  },
+
+  onShow: function () {
+    if (this.hide) {
+      this.glUserInfo()
+    }
+      //this.refreshList().then(() => { this.setData({ gotInfo: true }) })
   },
 
   /**
@@ -61,6 +69,16 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  glUserInfo: function() {
+    return app.waitLogin().then((ures) => {
+      var [uInfo, uObj] = ures
+      this.setData({
+        userInfo: uInfo,
+        userObj: uObj
+      })
+    })
   },
 
   bindOpenTask: function (e) {
