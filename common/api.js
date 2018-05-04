@@ -72,7 +72,12 @@ module.exports = {
           }
         },
         fail: (err) => {
-          reject(err)
+          if (err.errMsg.includes("file data is empty")) {
+            // FIXME: a temp fix...
+            resolve(undefined)
+          } else {
+            reject(err)
+          }
         }
       })
     })

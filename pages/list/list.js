@@ -19,7 +19,7 @@ Page({
 
   refreshList: function() {
     this.setData({ fetching: true })
-    api.apiGetUserTasks(this.data.userObj.id).then((lst) => {
+    return api.apiGetUserTasks(this.data.userObj.id).then((lst) => {
       this.setData({
         tasks: lst,
         fetching: false
@@ -34,13 +34,11 @@ Page({
     app.waitLogin().then((ures) => {
       this.setData({ logining: false })
       var [uInfo, uObj] = ures
-      console.log("hi", ures)
       this.setData({
         userInfo: uInfo,
         userObj: uObj
       })
-      this.refreshList()
-      this.setData({ gotInfo: true })
+      this.refreshList().then(() => { this.setData({ gotInfo: true }) })
     })
       .catch((err) => {
         this.setData({ logining: false })
@@ -53,6 +51,9 @@ Page({
    */
   onPullDownRefresh: function () {
     this.refreshList()
+      .then(() => {
+        wx.stopPullDownRefresh()
+      })
   },
 
   /**

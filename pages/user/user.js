@@ -19,7 +19,7 @@ Page({
   },
 
   refreshUserObj: function() {
-    api.apiGetUserMe()
+    return api.apiGetUserMe()
       .then((uObj) => {
         app.globalData.userObj = uObj
         this.setData({ userObj: uObj })
@@ -28,5 +28,8 @@ Page({
 
   onPullDownRefresh: function () {
     this.refreshUserObj()
+      .then(() => {
+        wx.stopPullDownRefresh()
+      })
   }
 })

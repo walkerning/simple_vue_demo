@@ -103,6 +103,7 @@ Page({
           uploadPercent: new Array(this.len).fill(0)
         })
       })
+      .catch((err) => { utils.error(err) })
   },
 
   downloadFiles: function() {
@@ -121,21 +122,20 @@ Page({
       })
       .then(() => {
         return this.downloadFiles().then((paths) => {
-          paths.forEach((path, ind) => {
+          return Promise.all(paths.map((path, ind) => {
             if (path === undefined) {
               if (this.data.state !== "incomplete") {
-                return Promise.reject({ errMsg: "Not exists" })
+                return Promise.reject({ message: "任务状态出错, 图片文件可能已被删除" })
               }
             } else {
               this.setData({
                 ["pics[" + ind + "]"]: path
               })
             }
-          })
-          this.setData({ fetching: false })
+            return Promise.resolve(null)
+          })).then(() => { this.setData({ fetching: false }) })
         })
       })
-      .catch((err) => { utils.error(err); throw err })
       .then(() => {
         var nInd = this.findNextNotPhotoed()
         if (nInd === undefined) {
@@ -148,6 +148,13 @@ Page({
 
   onPullDownRefresh: function () {
     this.refreshTaskInfo()
+      .then(() => {
+        wx.stopPullDownRefresh()
+      })
+      .catch((err) => {
+        utils.error(err)
+        wx.stopPullDownRefresh()
+      })
   },
 
   changeCurrentIndex: function (newInd, noaction) {

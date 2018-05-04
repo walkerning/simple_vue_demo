@@ -1,14 +1,22 @@
 module.exports = {
-  error: function error(err) {
+  error: function error(err, prefix) {
+    console.log(err)
     if (!err) {
       return
     }
     var errMsg = err // failed connection and so on
-    if (err.data && err.data.message) {
+    if (err.statusCode) {
       // for failed api request
-      errMsg = err.data.message
+      if (err.data.message) {
+        errMsg = err.data.message
+      } else {
+        errMsg = `错误: 返回代码 ${err.statusCode}`
+      }
     } else if (err.message) {
       errMsg = err.message // wechat api error
+    }
+    if (prefix) {
+      errMsg = prefix + errMsg
     }
     wx.showToast({
       title: errMsg,
