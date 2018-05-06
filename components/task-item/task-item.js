@@ -6,6 +6,9 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    taskName: {
+      type: String
+    },
     userId: {
       type: Number
     },

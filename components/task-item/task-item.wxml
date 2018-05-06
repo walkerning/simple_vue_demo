@@ -1,7 +1,7 @@
 <!--components/task.wxml-->
 <view class="weui-flex kind-list__item-hd" style="padding: 15rpx">
   <view class="weui-flex__item">
-    Task {{taskId}}
+    {{taskName}}
     <view class="tag weui-flex__item" style="float: right; color: {{stateViewCfg[state].color}}; background-color: {{stateViewCfg[state].backcolor}}; box-shadow: 0 0 0 2px #fff">
       <text>{{stateViewCfg[state].string}}</text>
     </view>

@@ -82,11 +82,13 @@ Page({
   },
 
   bindOpenTask: function (e) {
-    var task_id = e.currentTarget.id
+    var task_index = e.currentTarget.id
     // var query = serialize(this.data.tasks[task_id])
-    app.now_task = this.data.tasks[task_id]
+    // app.now_task = this.data.tasks[task_id]
+    var user_id = this.data.tasks[task_index].user_id
+    var task_id = this.data.tasks[task_index].id
     wx.navigateTo({
-      url: "../task/task"
+      url: `../task/task?user_id=${user_id}&id=${task_id}`
     })
   },
 

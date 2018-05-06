@@ -144,11 +144,15 @@ module.exports = {
       data: data
     })
   },
-  apiRunTask: function apiRunTask(user_id, task_id) {
-    return p_request({
+  apiRunTask: function apiRunTask(user_id, task_id, form_id) {
+    var options = {
       login: true,
       url: `/users/${user_id}/tasks/${task_id}/run`,
       method: "PUT"
-    });
+    }
+    if (form_id) {
+      options["data"] = { form_id }
+    }
+    return p_request(options);
   }
 }

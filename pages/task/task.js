@@ -63,12 +63,15 @@ Page({
     uploadPercent: [],
     toastText: "",
     toastHidden: true,
+    reportSubmit: false,
 
     // task infos
     id: null,
     user_id: null,
     meta_tag: "",
+    task_name: "",
     comment: "",
+    comment_len: 0,
     shoe_model: "", // FIXME: shoe_model这里处理一下...
 
     // shoe models
@@ -87,11 +90,14 @@ Page({
   onLoad: function (option) {
     // FIXME: supported shoe model should be fetched from server too...
     // this.setData(app.now_task)
-    // **TODO**: get picture from server
     this.len = this.data.picTypes.length
+    // this.setData({
+    //   user_id: app.now_task.user_id,
+    //   id: app.now_task.id
+    // })
     this.setData({
-      user_id: app.now_task.user_id,
-      id: app.now_task.id
+      user_id: option.user_id,
+      id: option.id
     })
     this.refreshTaskInfo()
       .then(() => {
@@ -184,8 +190,15 @@ Page({
     this.changeCurrentIndex(e.currentTarget.id)
   },
 
+  bindTaskNameInput: function(e) {
+    this.setData({ task_name: e.detail.value })
+  },
+
   bindCommentInput: function(e) {
-    this.setData({ comment: e.detail.value })
+    this.setData({
+      comment: e.detail.value,
+      comment_len: e.detail.value.length
+    })
   },
 
   bindActionChoose: function (e) {
@@ -208,6 +221,13 @@ Page({
   // bindToastChange: function(e) {
   //   this.setData( {toastHidden: true })
   // },
+  bindSwitchChange: function(e) {
+    this.setData({ reportSubmit: e.detail.value })
+  },
+
+  bindReturnToList: function(e) {
+    wx.switchTab({ url: "/pages/list/list" })
+  },
 
   bindSaveTap: function(e) {
     this.setData({
@@ -235,7 +255,8 @@ Page({
     return uploadTask.then(() => {
       return api.apiUpdateTask(user_id, task_id, {
         "shoe_model": this.data.shoe_model,
-        "comment": this.data.comment
+        "comment": this.data.comment,
+        "task_name": this.data.task_name
       });
     }).then((task) => {
       this.setData(task)
@@ -251,10 +272,11 @@ Page({
     })
   },
 
-  bindRunTap: function(e) {
+  bindRunSubmit: function(e) {
+    console.log('e.detail.formId:', this.data.reportSubmit, e.detail.formId)
     wx.showModal({
       title: "确定开始测试吗",
-      content: "一旦开始测试, 不能再改变任务配置或取消测试. 请仔细确认图片合格, 信息正确",
+      content: "一旦开始测试, 不能再改变任务配置或取消测试. 请仔细确认图片合格, 信息正确, 以及是否打开完成通知",
       confirmText: "确定",
       cancelText: "取消",
       success: (res) => {
@@ -265,7 +287,7 @@ Page({
             this.setData({
               requesting: true
             })
-            return api.apiRunTask(user_id, task_id)
+            return api.apiRunTask(user_id, task_id, e.detail.formId)
               .then((task) => {
                 // TODO: update this page...
                 this.setData(task)

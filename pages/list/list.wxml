@@ -8,7 +8,7 @@
     <!-- FIXME: view or block? -->
     <block wx:for="{{tasks}}" wx:key="id">
       <view class="kind-list__item" id="{{index}}" bindtap="bindOpenTask">
-        <task-item user-id="{{item.user_id}}" task-id="{{item.id}}" state="{{item.state}}" answer="{{item.answer}}" shoe-model="{{item.shoe_model}}"></task-item>
+        <task-item task-name="{{item.task_name}}" user-id="{{item.user_id}}" task-id="{{item.id}}" state="{{item.state}}" answer="{{item.answer}}" shoe-model="{{item.shoe_model}}"></task-item>
       </view>
     </block>
   </view>

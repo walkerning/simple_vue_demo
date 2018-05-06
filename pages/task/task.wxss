@@ -56,13 +56,6 @@
   padding-right: 30rpx;
 }
 
-.textarea {
-  height: 120rpx;
-  width: 95%;
-  background-color: #eee;
-  padding: 5rpx;
-}
-
 .page__hd {
     align-items: center;
     display: flex;
