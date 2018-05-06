@@ -42,7 +42,7 @@ Page({
       "mask_pic": "/images/index/mask4.png"
     }, {
       "type": "side_tag",
-      "name": "鞋盒测标",
+      "name": "鞋盒侧标",
       "mask_pic": "/images/index/mask5.png"
     }, {
       "type": "seal",

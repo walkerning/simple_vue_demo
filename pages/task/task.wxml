@@ -132,7 +132,7 @@
         <view class="weui-cells weui-cells_after-title">
           <view class="weui-cell">
             <view class="weui-cell__bd">
-              <textarea class="weui-textarea" disabled="true" maxlength="100" class="textarea" value="{{log}}" style="height: 3.3em" />
+              <textarea class="weui-textarea" disabled="true" maxlength="1000" class="textarea" value="{{log}}" style="height: 6.6em" />
             </view>
           </view>
         </view>

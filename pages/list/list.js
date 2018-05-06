@@ -97,6 +97,8 @@ Page({
       .then((t) => {
         this.data.tasks.push(t)
         this.setData({ tasks: this.data.tasks })
+        // open the newly created task directly
+        wx.navigateTo({ url: `../task/task?user_id=${t.user_id}&id=${t.id}` })
       })
   }
 })
