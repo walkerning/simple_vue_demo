@@ -26,7 +26,7 @@ Page({
     currentIndex: 0,
     picTypes: [{
       "type": "appear",
-      "name": "球鞋外观",
+      "name": "球鞋侧标",
       "mask_pic": "/images/index/mask1.png"
     }, {
       "type": "tag",
@@ -41,14 +41,20 @@ Page({
       "name": "球鞋鞋垫",
       "mask_pic": "/images/index/mask4.png"
     }, {
-      "type": "side_tag",
-      "name": "鞋盒侧标",
+      "type": "tongue",
+      "name": "球鞋鞋舌",
       "mask_pic": "/images/index/mask5.png"
-    }, {
-      "type": "seal",
-      "name": "鞋盒钢印",
-      "mask_pic": "/images/index/mask6.png"
     }],
+    // }, {
+    //   "type": "side_tag",
+    //   "name": "鞋盒侧标",
+    //   "mask_pic": "/images/index/mask5.png"
+    // }, {
+    // {
+    //   "type": "seal",
+    //   "name": "鞋盒钢印",
+    //   "mask_pic": "/images/index/mask6.png"
+    // }],
     pics: {},
     actionSheetHidden: true,
     actionSheetItems: ["预览", "重拍"],

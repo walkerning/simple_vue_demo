@@ -12,10 +12,10 @@
       </view>
     </block>
   </view>
-  <loading hidden="{{!logining}}">
+  <loading hidden="{{!logining}}" mask="true">
     登录中...
   </loading>
-  <loading hidden="{{!fetching}}">
+  <loading hidden="{{!fetching}}" mask="true">
     获取任务列表...
   </loading>
 </view>

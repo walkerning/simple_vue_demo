@@ -86,10 +86,10 @@
       </form>
       <!-- <button bindtap="bindResetTap" class="op-btn">重置</button> -->
 
-      <loading hidden="{{!uploading}}">
+      <loading hidden="{{!uploading}}" mask="true">
         上传任务配置...
       </loading>
-      <loading hidden="{{!requesting}}">
+      <loading hidden="{{!requesting}}" mask="true">
         发送运行请求...
       </loading>
     </block>
@@ -144,7 +144,7 @@
         <text style="margin-left: 20rpx" wx:if="{{state == 'finished'}}">{{answerViewCfg[answer]}}</text>
       </view>
     </block>
-    <loading hidden="{{!fetching}}">
+    <loading hidden="{{!fetching}}" mask="true">
       获取任务...
     </loading>
 
